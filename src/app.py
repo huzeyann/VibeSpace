@@ -11,9 +11,9 @@ from PIL import Image
 import numpy as np
 import pandas as pd
 
-from vibe_blending import run_vibe_blend_safe, run_vibe_blend_not_safe
-from ipadapter_model import create_image_grid
-from feedback_viewer import create_feedback_viewer_tab, store_feedback_to_hf_dataset
+from .vibe_blending import run_vibe_blend_safe, run_vibe_blend_not_safe
+from .ipadapter_model import create_image_grid
+from .feedback_viewer import create_feedback_viewer_tab, store_feedback_to_hf_dataset
 
 # Hugging Face Datasets for feedback storage
 try:
@@ -46,7 +46,7 @@ if USE_HUGGINGFACE_ZEROGPU:
     run_vibe_blend_not_safe = spaces.GPU(duration=60)(run_vibe_blend_not_safe)
 
     try:
-        from download_models import download_ipadapter
+        from .download_models import download_ipadapter
         download_ipadapter()
     except ImportError:
         logging.warning("Could not import download_models")

@@ -14,8 +14,8 @@ import torch.nn as nn
 from einops import rearrange
 from torchvision import transforms
 
-from ipadapter_model import extract_clip_embedding_tensor
-from ipadapter_model import load_ipadapter
+from .ipadapter_model import extract_clip_embedding_tensor
+from .ipadapter_model import load_ipadapter
 
 
 # Default hyperparameters

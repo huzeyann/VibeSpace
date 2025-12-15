@@ -11,8 +11,8 @@ from PIL import Image
 from scipy.optimize import linear_sum_assignment
 from einops import rearrange
 
-from extract_features import image_inverse_transform
-from ipadapter_model import image_grid
+from .extract_features import image_inverse_transform
+from .ipadapter_model import image_grid
 from ncut_pytorch import ncut_fn, kway_ncut, convert_to_lab_color
 from ncut_pytorch.color import tsne_color
 from ncut_pytorch.utils.gamma import find_gamma_by_degree

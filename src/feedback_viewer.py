@@ -19,7 +19,7 @@ from datasets import Dataset
 import gradio as gr
 from PIL import Image
 
-from ipadapter_model import create_image_grid
+from .ipadapter_model import create_image_grid
 
 # Hugging Face Datasets imports
 try:

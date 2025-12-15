@@ -4,13 +4,13 @@ from PIL import Image
 from typing import List, Optional, Tuple
 import torch.nn.functional as F
 from omegaconf import OmegaConf
-from ipadapter_model import generate_images_from_clip_embeddings
-from ipadapter_model import load_ipadapter
-from intrinsic_dim import estimate_intrinsic_dimension
-from vibespace_model import VibeSpaceModel, train_vibe_space, clear_gpu_memory
-from dino_correspondence import kway_cluster_per_image, match_centers_two_images, get_cluster_center_features
+from .ipadapter_model import generate_images_from_clip_embeddings
+from .ipadapter_model import load_ipadapter
+from .intrinsic_dim import estimate_intrinsic_dimension
+from .vibespace_model import VibeSpaceModel, train_vibe_space, clear_gpu_memory
+from .dino_correspondence import kway_cluster_per_image, match_centers_two_images, get_cluster_center_features
 
-from extract_features import extract_dino_features, extract_clip_features, dino_image_transform, clip_image_transform
+from .extract_features import extract_dino_features, extract_clip_features, dino_image_transform, clip_image_transform
 import logging
 import gradio as gr
 

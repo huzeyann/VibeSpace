@@ -3,7 +3,7 @@ def download_ipadapter():
     # snapshot_download(repo_id="h94/IP-Adapter", ignore_patterns="sdxl_models/*", local_dir="./downloads/")
     snapshot_download(repo_id="h94/IP-Adapter", local_dir="./downloads/")
 
-    from ipadapter_model import load_ipadapter
+    from .ipadapter_model import load_ipadapter
     ip_model = load_ipadapter(device="cpu")
     
 if __name__ == "__main__":
