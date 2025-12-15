@@ -8,8 +8,6 @@ This module provides utilities for working with IP-Adapter models, including:
 - Utility functions for image processing
 """
 
-import sys
-from pathlib import Path
 from typing import List, Optional, Union, Tuple
 
 import numpy as np
@@ -20,12 +18,7 @@ from diffusers import StableDiffusionPipeline, StableDiffusionXLPipeline, DDIMSc
 # Fix for torch 2.5.0 compatibility
 torch.backends.cuda.enable_cudnn_sdp(False)
 
-# Add parent directory to path for ip_adapter import
-_parent_dir = str(Path(__file__).parent.parent)
-if _parent_dir not in sys.path:
-    sys.path.insert(0, _parent_dir)
-
-from ip_adapter import IPAdapterPlus, IPAdapterPlusXL
+from .ip_adapter import IPAdapterPlus, IPAdapterPlusXL
 
 
 # ===== Image Utility Functions =====

@@ -54,26 +54,6 @@ Or try the online demo: [🤗 Hugging Face Space](https://huggingface.co/spaces/
 
 See `demo_vibe_blending.ipynb` for interactive examples.
 
-## Project Structure
-
-```
-VibeSpace/
-├── src/                        # Source code
-│   ├── app.py                  # Gradio web application
-│   ├── vibe_blending.py        # Main blending logic
-│   ├── vibespace_model.py      # Neural compression model
-│   ├── ipadapter_model.py      # IP-Adapter interface
-│   ├── extract_features.py     # DINO/CLIP feature extraction
-│   ├── dino_correspondence.py  # Visual correspondence analysis
-│   ├── intrinsic_dim.py        # Intrinsic dimension estimation
-│   ├── feedback_viewer.py      # Feedback viewer UI
-│   └── download_models.py      # Model download utility
-├── ip_adapter/                 # IP-Adapter module
-├── images/                     # Example images
-├── config.yaml                 # Configuration file
-└── requirements.txt            # Dependencies
-```
-
 ---
 
 ## Capabilities
