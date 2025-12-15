@@ -1,0 +1,17 @@
+torch
+torchvision
+einops
+matplotlib
+opencv-python
+pillow====11.2.1
+scikit-image==0.25.2
+omegaconf==2.3.0
+scikit-dimension==0.3.4
+pytorch-lightning==1.9.4
+diffusers==0.33.1
+transformers==4.47.0
+triton==3.0.0
+ncut_pytorch==2.3.0
+datasets==3.5.0
+huggingface_hub
+gradio==5.49.1

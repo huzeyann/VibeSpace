@@ -1,0 +1,26 @@
+in_dim: 768 #1024 #768 #384
+vibe_dim: -1
+out_dim: 1280
+latent_dim: 512
+n_layer: 2
+
+n_eig: 64
+flag_encoder_loss: 1.0
+flag_decoder_loss: 0.01
+recon_loss: 1.0
+
+negative_beta: 1.0
+do_decoder_negative_flag: false
+
+single_scale_flag: false
+
+log_dir: /tmp/logs/
+name: debug
+
+ipadapter_version: sd15  # sdxl, sd15
+
+steps: 1000
+batch_size: 8
+n_negative_sample: 100
+n_sample_eigsolve: 2000
+lr: 0.001

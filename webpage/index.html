@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Vibe Spaces for Creatively Connecting and Expressing Visual Concepts - generating coherent and meaningful hybrids that reveal shared attributes between images.">
+  <meta name="keywords" content="Vibe Space, Vibe Blending, Image Morphing, Creative Blending, CLIP, Diffusion Models">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vibe Spaces for Creatively Connecting and Expressing Visual Concepts</title>
+
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.svg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+
+  <!-- MathJax for LaTeX rendering -->
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+
+<!-- Table of Contents Navigation - Always on top -->
+<nav id="toc-nav" class="toc-navbar" style="position: fixed; top: 0; left: 0; right: 0; width: 100%; z-index: 99999; background: #ffffff; padding: 0.75rem 0; border-bottom: 1px solid rgba(0, 0, 0, 0.1);">
+  <div class="toc-container" style="max-width: 1200px; margin: 0 auto; padding: 0 1rem; display: flex; justify-content: center; align-items: center;">
+    <ul class="toc-menu" style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: row; justify-content: center; align-items: center; flex-wrap: wrap; gap: 1rem;">
+      <li style="display: inline-block; margin: 0; padding: 0;"><a href="#" class="toc-link"><i class="fas fa-home" style="margin-right: 0.5rem;"></i>Overview</a></li>
+      <li style="display: inline-block; margin: 0; padding: 0;"><a href="#blending-results" class="toc-link"><i class="fas fa-images" style="margin-right: 0.5rem;"></i>Vibe Blending</a></li>
+      <li style="display: inline-block; margin: 0; padding: 0;"><a href="#baseline-comparison" class="toc-link"><i class="fas fa-balance-scale" style="margin-right: 0.5rem;"></i>Baseline Comparison</a></li>
+      <li style="display: inline-block; margin: 0; padding: 0;"><a href="#method" class="toc-link"><i class="fas fa-cogs" style="margin-right: 0.5rem;"></i>Method</a></li>
+      <li style="display: inline-block; margin: 0; padding: 0;"><a href="#capabilities" class="toc-link"><i class="fas fa-star" style="margin-right: 0.5rem;"></i>Capabilities</a></li>
+      <li style="display: inline-block; margin: 0; padding: 0;"><a href="#evaluation" class="toc-link"><i class="fas fa-clipboard-check" style="margin-right: 0.5rem;"></i>Evaluation</a></li>
+      <li style="display: inline-block; margin: 0; padding: 0;"><a href="#failure-cases" class="toc-link"><i class="fas fa-exclamation-triangle" style="margin-right: 0.5rem;"></i>Failure Cases</a></li>
+    </ul>
+  </div>
+</nav>
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+    </div>
+  </div>
+</nav>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">Vibe Spaces for Creatively Connecting and Expressing Visual Concepts</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://huzeyann.github.io" target="_blank">Huzheng Yang</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="https://k8xu.github.io" target="_blank"> Katherine Xu</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="https://scholar.google.com/citations?user=L61d7OUAAAAJ&hl=en" target="_blank">Andrew Lu</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="https://crest.cuny.edu/our-team/michael-grossberg" target="_blank">Michael D. Grossberg</a><sup>2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://yutongbai.com" target="_blank">Yutong Bai</a><sup>3</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://www.cis.upenn.edu/~jshi" target="_blank">Jianbo Shi</a><sup>1</sup>,
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>UPenn</span>
+            <span class="author-block"><sup>2</sup>CUNY</span>
+            <span class="author-block"><sup>3</sup>UC Berkeley</span>
+          </div>
+
+          <!-- <div class="is-size-5 publication-authors">
+            <span class="author-block">CVPR 2026</span>
+          </div> -->
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="#"
+                   class="external-link button is-normal is-rounded is-dark" target="_blank">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <!-- Video Link. -->
+              <!-- <span class="link-block">
+                <a href="#"
+                   class="external-link button is-normal is-rounded is-dark" target="_blank">
+                  <span class="icon">
+                      <i class="fab fa-youtube"></i>
+                  </span>
+                  <span>Video</span>
+                </a>
+              </span> -->
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="#"
+                   class="external-link button is-normal is-rounded is-dark" target="_blank">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+              <span class="link-block">
+                <a href="https://huggingface.co/spaces/huzey/VibeSpace"
+                   class="external-link button is-normal is-rounded is-dark" target="_blank">
+                  <span class="icon">
+                    🤗
+                  </span>
+                  <span>Demo</span>
+                </a>
+              </span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="teaser" class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <img src="./static/images/figures/teaser.png" alt="Teaser figure" style="width: 100%; border-radius: 10px;">
+      <div class="has-text-centered" style="margin-top: 1rem; padding: 0 2rem;">
+        <h2 class="subtitle is-5" style="font-weight: 200; line-height: 1.3; max-width: 900px; margin: 0 auto;">
+          We introduce <strong>Vibe Space</strong>, a hierarchical graph manifold that learns low-dimensional geodesics in feature spaces like CLIP, enabling smooth and semantically consistent transitions between concepts.
+        </h2>
+
+        <div class="content has-text-justified" style="margin-top: 2rem; padding: 0 2rem;">
+          <p style="margin-bottom: 1rem;">
+            Consider blending a musician playing a violin with one playing a guitar. Different approaches identify different relevant attributes:
+          </p>
+          <ul style="margin-left: 2rem; margin-bottom: 1rem; list-style-type: disc;">
+            <li><strong>LLMs (Gemini, GPT)</strong> might focus on object parts or style transfer</li>
+            <li><strong>Musicians</strong> would attend to the instrument and how it is played</li>
+          </ul>
+          <p>
+            The intuitive process of identifying and fusing meaningful attributes—the <strong>"vibe"</strong><sup><a href="#fn1" id="ref1">1</a></sup>—reveals creative connections between distinct concepts.
+          </p>
+          <div class="footnotes" style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #e8e8e8;">
+            <p id="fn1" style="font-size: 0.9em; line-height: 1.6;">
+              <sup>1</sup> The term "vibe," short for "vibration," originated in 1960s jazz slang to describe the mood or feeling conveyed by music, a person, or space. <a href="#ref1">↩</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="blending-results" class="hero is-light is-small">
+  <div class="hero-body">
+    <div class="container">
+      <h2 class="title is-3 has-text-centered" style="margin-bottom: 2rem;">Vibe Blending Results</h2>
+      <div class="content has-text-centered" style="margin-top: 2rem; padding: 0 2rem;">
+        <p>
+            <strong>Vibe Blending</strong> creates coherent hybrids that merge the relevant shared attributes between images. 
+            TODO: add video examples here.
+        </p>
+      </div>
+      <div id="video-carousel" class="carousel results-carousel">
+        <div class="item item-video1">
+          <div style="background: #f5f5f5; border-radius: 10px; padding: 1rem; text-align: center; min-height: 200px; display: flex; align-items: center; justify-content: center;">
+            <p>Video 1</p>
+          </div>
+        </div>
+        <div class="item item-video2">
+          <div style="background: #f5f5f5; border-radius: 10px; padding: 1rem; text-align: center; min-height: 200px; display: flex; align-items: center; justify-content: center;">
+            <p>Video 2</p>
+          </div>
+        </div>
+        <div class="item item-video3">
+          <div style="background: #f5f5f5; border-radius: 10px; padding: 1rem; text-align: center; min-height: 200px; display: flex; align-items: center; justify-content: center;">
+            <p>Video 3</p>
+          </div>
+        </div>
+        <div class="item item-video4">
+          <div style="background: #f5f5f5; border-radius: 10px; padding: 1rem; text-align: center; min-height: 200px; display: flex; align-items: center; justify-content: center;">
+            <p>Video 4</p>
+          </div>
+        </div>
+        <div class="item item-video5">
+          <div style="background: #f5f5f5; border-radius: 10px; padding: 1rem; text-align: center; min-height: 200px; display: flex; align-items: center; justify-content: center;">
+            <p>Video 5</p>
+          </div>
+        </div>
+        <div class="item item-video6">
+          <div style="background: #f5f5f5; border-radius: 10px; padding: 1rem; text-align: center; min-height: 200px; display: flex; align-items: center; justify-content: center;">
+            <p>Video 6</p>
+          </div>
+        </div>
+        <div class="item item-video7">
+          <div style="background: #f5f5f5; border-radius: 10px; padding: 1rem; text-align: center; min-height: 200px; display: flex; align-items: center; justify-content: center;">
+            <p>Video 7</p>
+          </div>
+        </div>
+        <div class="item item-video8">
+          <div style="background: #f5f5f5; border-radius: 10px; padding: 1rem; text-align: center; min-height: 200px; display: flex; align-items: center; justify-content: center;">
+            <p>Video 8</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="baseline-comparison" class="section">
+  <div class="container is-max-desktop">
+    <!-- Vibe Blending Results -->
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Vibe Blending Baseline Comparison</h2>
+        <div class="content has-text-justified" style="margin-top: 2rem; padding: 0 2rem;">
+          <p style="margin-bottom: 1rem;">
+            Our method identifies and blends the relevant visual attributes—the <strong>"vibe"</strong>—that connect distinct concepts.
+          </p>
+          <p style="margin-bottom: 0.5rem;"><strong>Example:</strong> When blending a map and a chicken:</p>
+          <ul style="margin-left: 2rem; margin-bottom: 1rem; list-style-type: disc;">
+            <li><strong>Our method</strong> recognizes that the shared "vibe" is <strong>shape</strong> (not color or texture)</li>
+            <li><strong>Baselines</strong> (CLIP Avg, Gemini, GPT) often fail to identify key attributes or fuse them effectively</li>
+          </ul>
+        </div>
+        <img src="./static/images/figures/blending_qualitative.png" alt="Blending qualitative results" style="width: 100%; margin: 1rem 0; border-radius: 10px;">
+      </div>
+    </div>
+
+    <!-- Comparison with Baselines -->
+    <section class="hero is-light is-small">
+      <div class="hero-body">
+        <div class="container">
+          <div class="columns is-centered">
+            <div class="column is-four-fifths">
+              <h3 class="title is-4">More Baseline Results</h3>
+              <ul style="margin-left: 2rem; margin-bottom: 1rem; list-style-type: disc;">
+                <li><strong>AID</strong> fails to identify key attributes or fuse them effectively</li>
+                <li><strong>DiffMorpher</strong> fails to produce coherent blends, producing blurry images</li>
+              </ul>
+              <!-- <p>
+                Our method generates coherent blends that focus on the most relevant attributes shared by the input images.
+              </p> -->
+            </div>
+          </div>
+          <div id="baseline-carousel" class="carousel results-carousel">
+            <div class="item item-baseline1">
+              <img id="baseline1" src="./static/images/figures_appendix/001-015_no_difficulty.png" loading="lazy">
+            </div>
+            <div class="item item-baseline2">
+              <img id="baseline2" src="./static/images/figures_appendix/026-184_no_difficulty.png" loading="lazy">
+            </div>
+            <div class="item item-baseline3">
+              <img id="baseline3" src="./static/images/figures_appendix/056-187_no_difficulty.png" loading="lazy">
+            </div>
+            <div class="item item-baseline4">
+              <img id="baseline4" src="./static/images/figures_appendix/082-156_no_difficulty.png" loading="lazy">
+            </div>
+            <div class="item item-baseline5">
+              <img id="baseline5" src="./static/images/figures_appendix/00173_Medium.png" loading="lazy">
+            </div>
+            <div class="item item-baseline6">
+              <img id="baseline6" src="./static/images/figures_appendix/00666_Low.png" loading="lazy">
+            </div>
+            <div class="item item-baseline7">
+              <img id="baseline7" src="./static/images/figures_appendix/01028_Low.png" loading="lazy">
+            </div>
+            <div class="item item-baseline8">
+              <img id="baseline8" src="./static/images/figures_appendix/01577_Medium.png" loading="lazy">
+            </div>
+            <div class="item item-baseline9">
+              <img id="baseline9" src="./static/images/figures_appendix/01988_Medium.png" loading="lazy">
+            </div>
+            <div class="item item-baseline10">
+              <img id="baseline10" src="./static/images/figures_appendix/02140_High.png" loading="lazy">
+            </div>
+            <div class="item item-baseline11">
+              <img id="baseline11" src="./static/images/figures_appendix/02145_Medium.png" loading="lazy">
+            </div>
+            <div class="item item-baseline12">
+              <img id="baseline12" src="./static/images/figures_appendix/02268_High.png" loading="lazy">
+            </div>
+            <div class="item item-baseline13">
+              <img id="baseline13" src="./static/images/figures_appendix/02718_High.png" loading="lazy">
+            </div>
+            <div class="item item-baseline14">
+              <img id="baseline14" src="./static/images/figures_appendix/03432_Low.png" loading="lazy">
+            </div>
+            <div class="item item-baseline15">
+              <img id="baseline15" src="./static/images/figures_appendix/04624_High.png" loading="lazy">
+            </div>
+            <div class="item item-baseline16">
+              <img id="baseline16" src="./static/images/figures_appendix/05783_Low.png" loading="lazy">
+            </div>
+            <div class="item item-baseline17">
+              <img id="baseline17" src="./static/images/figures_appendix/05989_Medium.png" loading="lazy">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>
+
+<section id="method" class="section">
+  <div class="container is-max-desktop">
+    <!-- 2. Methods for Vibe Space -->
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-2">Vibe Space Method</h2>
+
+        <div class="content has-text-justified">
+          <!-- Subsection 1 -->
+          <div class="box" style="margin-top: 1rem; margin-bottom: 2rem; border: 1px solid #e8e8e8; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            <div class="content has-text-justified">
+              <h3 class="title is-4">Intuition</h3>
+              <p>
+                We illustrate our method using a 2D latent space example.
+                Our approach <strong>curves around the non-linear manifold</strong>.
+              </p>
+              
+              <div class="columns is-vcentered is-centered">
+                <div class="column has-text-centered">
+                  <img src="./static/images/input_points.png" alt="Latent Space Holes" style="border-radius: 10px; max-height: 250px;">
+                  <p class="is-size-7"><strong>(1) Example Data Manifold</strong></p>
+                </div>
+                <div class="column has-text-centered">
+                  <video poster="" id="cost_map" autoplay controls muted loop playsinline style="width: 100%; border-radius: 10px; max-height: 250px;">
+                    <source src="./static/videos/cost_map_alpha_animation.mp4" type="video/mp4">
+                  </video>
+                  <p class="is-size-7"><strong>(2) Path Finding Process</strong></p>
+                </div>
+                <div class="column has-text-centered">
+                  <img src="./static/images/path_finding_illustration_alpha_0.50.png" alt="Path Finding Illustration" style="width: 100%; border-radius: 10px; max-height: 250px;">
+                  <p class="is-size-7"><strong>(3) How Gradient of Ncut Vectors Guides Path Finding</strong></p>
+                </div>
+              </div>
+
+              <p>
+                We construct a <strong>graph diffusion space</strong> that captures the manifold's intrinsic geometry. Path finding proceeds in two steps: (1) linearly interpolate Ncut vectors \(\mathbf{\Psi}_t(\mathbf{x}_\alpha) = (1-\alpha)\mathbf{\Psi}_t(\mathbf{x}_A) + \alpha\mathbf{\Psi}_t(\mathbf{x}_B)\), then (2) use <strong>inverse mapping</strong> to recover the corresponding point in the original space:
+                $$ \gamma(\alpha) = \arg\min_{\mathbf{x^*}} \big\| \mathbf{\Psi}_t(\mathbf{x^*}) - \mathbf{\Psi}_t(\mathbf{x}_\alpha) \big\|_2^2 $$
+              </p>
+              <p>
+                <strong>Ncut vectors</strong> (eigenvectors \(\mathbf{\Psi}\)) are computed before encoder training. In this 2D example, step (2) uses <strong>gradient descent</strong> (visualized in (3)) because the <strong>gradient</strong> \(\nabla_{\mathbf{x}^*}\mathbf{\Psi}_t(\mathbf{x}^*)\) is directly computable. For real images, we instead use the learned <strong>Vibe Space</strong> encoder-decoder to obtain the optimal point.
+              </p>
+            </div>
+          </div>
+
+          <!-- Subsection 2 -->
+          <div class="box" style="margin-top: 1rem; margin-bottom: 2rem; border: 1px solid #e8e8e8; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            <div class="content has-text-justified">
+              <h3 class="title is-4">Overview</h3>
+              
+              <video controls autoplay loop muted style="width: 100%; margin: 1rem 0; border-radius: 10px;">
+                <source src="./static/videos/methods1.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+              
+              <p style="margin-bottom: 0.5rem;"><strong>Forward Mapping:</strong></p>
+              <ul style="margin-left: 2rem; margin-bottom: 1rem; list-style-type: disc;">
+                <li><strong>(a.)</strong> Compute affinity graph <strong>W</strong> and graph Laplacian <strong>L</strong></li>
+                <li><strong>(b.)</strong> Compute Ncut eigenvectors <strong>Ψ(x)</strong> of <strong>L</strong> as manifold coordinates</li>
+              </ul>
+              
+              <p style="margin-bottom: 0.5rem;"><strong>Inverse Mapping:</strong></p>
+              <ul style="margin-left: 2rem; margin-bottom: 1.5rem; list-style-type: disc;">
+                <li><strong>(c.)</strong> Interpolate in manifold space and invert to recover the path in feature space</li>
+              </ul>
+              
+              <img src="./static/images/methods2.png" alt="Vibe Space Method" style="width: 100%; margin: 1rem 0; border-radius: 10px;">
+              
+              <p style="margin-top: 1.5rem; margin-bottom: 0.5rem;"><strong>Application to Real Images:</strong></p>
+              <ul style="margin-left: 2rem; margin-bottom: 1rem; list-style-type: disc;">
+                <li><strong>(d.)</strong> Extract DINO patch tokens as graph nodes, compute affinity <strong>W</strong></li>
+                <li><strong>(e.)</strong> Top <em>m</em> eigenvectors yield co-salient segments and manifold coordinates</li>
+                <li><strong>(f.)</strong> Apply inverse mapping to CLIP space, generate images via Stable Diffusion IP-Adapter</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Subsection 3 -->
+          <div class="box" style="margin-top: 1rem; margin-bottom: 2rem; border: 1px solid #e8e8e8; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            <div class="content has-text-justified">
+              <h3 class="title is-4">Why Flag Space Multi-Scale Loss</h3>
+              <p>
+                Graph Laplacian eigenvectors capture geometry at different scales: leading eigenvectors describe global structure, while higher-order eigenvectors encode local variations. Truncating to a fixed number \(m\) of eigenvectors selects one scale, leading to paths that focus on too many or too few attributes.
+              </p>
+              <p>
+                We use a <strong>flag space</strong>, a hierarchy of nested embeddings \(\mathbf{\Psi}^{1:m_1} \subset \mathbf{\Psi}^{1:m_2} \dots \subset \mathbf{\Psi}^{1:m_M}\), to encapsulate both coarse and fine manifold structures. The multi-scale path is recovered by minimizing the average reconstruction error across scales:
+                $$ \gamma(\alpha) = \arg\min_{\mathbf{x^*}} \frac{1}{|\mathcal{M}|} \sum_{m_k \in \mathcal{M}} \big\| \mathbf{\Psi}_t^{1:m_k}(\mathbf{x^*}) - \mathbf{\Psi}_t^{1:m_k}(\mathbf{x}_\alpha) \big\|_2^2 $$
+                This enforces consistency across global and local geometry when finding paths between points.
+              </p>
+            </div>
+          </div>
+
+          <!-- Subsection 4 -->
+          <div class="box" style="margin-top: 1rem; margin-bottom: 2rem; border: 1px solid #e8e8e8; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            <div class="content has-text-justified">
+              <h3 class="title is-4">Why Path Finding by Graph Diffusion</h3>
+              <p>
+                Unlike discrete shortest path algorithms like Dijkstra's algorithm, which operate on a fixed graph and find paths through existing nodes, our approach using graph diffusion is robust to leaks and outliers in the data manifold.
+              </p>
+              <p>
+                Dijkstra's algorithm fails when data contains noise and leaks because it relies on direct graph connectivity. A single noisy edge or outlier can create spurious shortcuts that lead the algorithm astray. In contrast, graph diffusion captures the global structure of the manifold through spectral decomposition, effectively filtering out local noise and outliers.
+              </p>
+              
+              <div style="display: flex; justify-content: center;">
+                <video controls autoplay loop muted style="width: 40%; margin: 1rem 0; border-radius: 10px;">
+                  <source src="./static/videos/djistra_vs_ncut.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+            </div>
+          </div>
+
+          <!-- Subsection 5 -->
+          <div class="box" style="margin-top: 1rem; margin-bottom: 2rem; border: 1px solid #e8e8e8; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            <div class="content has-text-justified">
+              <h3 class="title is-4">How Vibe Space is Trained to Approximate Inverse Mapping</h3>
+              <p>
+                For real images, gradient descent on the full graph is computationally expensive. Instead, we train two lightweight MLP networks to approximate the forward and inverse mappings:
+              </p>
+              <ul style="margin-left: 2rem; margin-bottom: 1rem; list-style-type: disc;">
+                <li><strong>Encoder:</strong> Maps input features \(\mathbf{x}\) to diffusion coordinates \(\mathbf{\Psi}_t(\mathbf{x})\), simulating the forward mapping</li>
+                <li><strong>Decoder:</strong> Maps diffusion coordinates back to feature space, approximating the inverse mapping</li>
+              </ul>
+              <p>
+                Training takes under 30 seconds and ensures that Euclidean distances and linear paths in Vibe Space correspond to geodesic distances and semantic paths on the underlying manifold. This enables efficient path finding without gradient descent at inference time.
+              </p>
+            </div>
+          </div>
+
+          <!-- Subsection 6 -->
+          <div class="box" style="margin-top: 1rem; margin-bottom: 2rem; border: 1px solid #e8e8e8; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            <div class="content has-text-justified">
+              <h3 class="title is-4">Why Computing Latent Space from Few Examples Enables Vibe Identification</h3>
+              <p>
+                We compute the latent space from <strong>only 2-4 image examples</strong> rather than the entire training dataset. This context-specific manifold captures the dominant shared attributes—the "vibe"—between the specific images being blended.
+              </p>
+              <p>
+                <strong>Our approach:</strong> By constructing the graph Laplacian from only the input images, the leading eigenvectors naturally capture the most relevant attributes for that specific pair.
+              </p>
+              <p>
+                <strong>Alternative approaches (e.g., <a href="https://openaccess.thecvf.com/content/CVPR2025/papers/Yu_Probability_Density_Geodesics_in_Image_Diffusion_Latent_Space_CVPR_2025_paper.pdf" target="_blank">Yu et al.</a>):</strong> Methods that compute the latent space from the entire training dataset create a global manifold encoding all possible relationships. This global perspective cannot identify which attributes are most relevant for blending a specific pair, as it mixes irrelevant relationships from the full dataset.
+              </p>
+              
+              <div style="display: flex; justify-content: center; margin: 1.5rem 0;">
+                <div style="text-align: center;">
+                  <img src="./static/images/local_vs_global.png" alt="Local Vibe Space vs Global Latent Space Comparison" style="width: 40%; border-radius: 10px;">
+                  <p class="is-size-7" style="margin-top: 0.5rem;"><strong>Left:</strong> Local Vibe Space (Few Examples) — focused path capturing dominant attributes<br><strong>Right:</strong> Global Latent Space (All Data) — dense manifold with multiple paths obscuring specific relationships</p>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="capabilities" class="section">
+  <div class="container is-max-desktop">
+    <!-- 3. More Results -->
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-2">Vibe Space Capabilities</h2>
+        
+        <div class="content has-text-justified" style="margin-top: 1rem; margin-bottom: 2rem;">
+          <p>
+            Vibe Space enables a range of creative applications beyond simple interpolation. Below we demonstrate key capabilities 
+            that showcase the flexibility and power of discovering semantic manifolds between visual concepts.
+          </p>
+        </div>
+
+        <!-- Vibe Analogy -->
+        <div class="box" style="margin-top: 2rem; border: 1px solid #e8e8e8; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+          <div class="content has-text-justified">
+            <h3 class="title is-4">Vibe Analogy</h3>
+            <p>
+              With the discovered vibe, we can extrapolate to nontrivial but related concepts, enabling creative analogies that go beyond 
+              simple interpolation. For example, we can morph Leonardo DiCaprio's face into a playing card.
+            </p>
+            <img src="./static/images/figures/figure3.jpg" alt="Vibe Analogy examples" style="width: 100%; margin: 1rem 0; border-radius: 10px;">
+            <img src="./static/images/figures/more_analogies.png" alt="Vibe Analogy examples" style="width: 80%; margin: 1rem auto; border-radius: 10px; display: block;">
+          </div>
+        </div>
+
+        <!-- Negative Vibe -->
+        <div class="box" style="margin-top: 2rem; border: 1px solid #e8e8e8; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+          <div class="content has-text-justified">
+            <h3 class="title is-4">Negative Vibe Control</h3>
+            <p>
+              Vibe attributes are implicitly extracted by Vibe Space. The blending pair defines desired vibes, while negative pairs define 
+              vibes to suppress. By subtracting the negative vibe, we can control which attributes are blended.
+            </p>
+            <img src="./static/images/figures/neg_vibe.png" alt="Negative vibe control" style="width: 100%; margin: 1rem 0; border-radius: 10px;">
+            <p>
+              The blending pair defines desired vibes (rotation + style). The negative pair defines vibes to suppress (style). 
+              Blending without negative examples transfers both attributes. Subtracting the negative vibe, only rotation is blended.
+            </p>
+            <img src="./static/images/figures/neg_vibes_extended.png" alt="Negative vibe control" style="width: 100%; margin: 1rem 0; border-radius: 10px;">
+          </div>
+        </div>
+
+        <!-- Extrapolation -->
+        <div class="box" style="margin-top: 2rem; border: 1px solid #e8e8e8; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+          <div class="content has-text-justified">
+            <h3 class="title is-4">Extrapolation</h3>
+            <p>
+              Vibe Space can extrapolate beyond the input images to generate related concepts. By extending the vibe path, 
+              we can create novel visual concepts that maintain semantic coherence.
+            </p>
+            <img src="./static/images/figures/extrapolate.png" alt="Extrapolation examples" style="width: 80%; margin: 1rem auto; border-radius: 10px; display: block;">
+          </div>
+        </div>
+
+        <!-- Training with Extra Images -->
+        <div class="box" style="margin-top: 2rem; border: 1px solid #e8e8e8; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+          <div class="content has-text-justified">
+            <h3 class="title is-4">Training with Extra Images</h3>
+            <p>
+              Although two images suffice to train the Vibe Space and identify the dominant attributes, adding related exemplars can enhance 
+              the dominant attributes and suppress spurious ones. This allows for more robust blending when dealing with complex scenes or 
+              when certain attributes need to be emphasized.
+            </p>
+            <img src="./static/images/figures_appendix/interpolation_extra_images.png" alt="Training with extra images" style="width: 80%; margin: 1rem auto; border-radius: 10px; display: block;">
+            <p>
+              In this example, adding extra images helps the model to learn the dominant attributes (glass texture vs sand texture) and suppress spurious ones (triangle vs round shape). So that the blend can create a pyramid with glass texture.
+            </p>
+          </div>
+        </div>
+
+        <!-- N-image Blending -->
+        <div class="box" style="margin-top: 2rem; border: 1px solid #e8e8e8; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+          <div class="content has-text-justified">
+            <h3 class="title is-4">N-Image Blending</h3>
+            <p>
+              Vibe Space can blend multiple images simultaneously, discovering shared attributes across multiple concepts.
+            </p>
+            <img src="./static/images/figures/dog_ram_horse.png" alt="N-image blending" style="width: 95%; margin: 1rem auto; border-radius: 10px; display: block;">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+  
+<section id="evaluation" class="section"> 
+  <div class="container is-max-desktop">
+    <!-- 4. Evaluation -->
+    <div class="columns is-centered">
+      <div class="column is-">
+        <h2 class="title is-2">Evaluation</h2>
+
+        <div class="content has-text-justified">
+          <h3 class="title is-4">What Makes a Blend Creative?</h3>
+          <p style="margin-bottom: 1rem;">
+            Cognitive psychology suggests that more creative individuals can connect more distant or weakly linked concepts. 
+            They move through intermediate associations, following nonlinear paths across clusters of related concepts.
+          </p>
+          <img src="./static/images/apple_house.png" alt="Creativity diagram: more creative vs less creative paths" style="width: 80%; margin: 1rem auto; border-radius: 10px; display: block;">
+          <p style="margin-bottom: 1rem;">
+            Rather than jumping directly between remote ideas (e.g., <em>apple</em> → <em>house</em>), they move through intermediate 
+            associations (e.g., <em>apple</em> → <em>tree</em> → <em>wood</em> → <em>house</em>), following nonlinear paths across 
+            clusters of related concepts.
+          </p>
+        </div>
+
+        <div class="content has-text-justified">
+          <h3 class="title is-4">How do humans rate the creativity of a blend?</h3>
+          <p>
+            To gauge human perceptions of creativity, we ask raters to compare different image pairs along two related but distinct axes:
+          </p>
+          <ul style="padding-left: 2rem; list-style-type: disc;">
+            <li><strong>Creative Potential:</strong> How much the content of the image pair allows for an interesting or compelling blend.</li>
+            <li><strong>Blend Difficulty:</strong> How challenging it would be to create a coherent hybrid that fuses the shared attributes.</li>
+          </ul>
+          <img src="./static/images/figures/human_creativity.png" alt="Human creativity evaluation" style="width: 100%; margin: 1rem 0; border-radius: 10px;">
+          <!-- <p>
+            These axes are informed by cognitive psychology studies suggesting that human creativity involves both attention and cognitive 
+            control to produce meaningful connections between concepts. We observe that image pairs with higher Blend Difficulty tend to 
+            have higher Creative Potential and are generally more conceptually different.
+          </p> -->
+        </div>
+
+        <div class="content has-text-justified">
+          <h3 class="title is-4">How to estimate blend difficulty?</h3>
+          <p style="margin-bottom: 1rem;">
+            We hypothesize that blending conceptually distant pairs involves traversing longer, curved paths in pretrained feature spaces, compared to blending nearby pairs.
+          </p>
+          <p style="margin-bottom: 0.5rem;">To estimate the difficulty of blending two images, we define a <strong>Path Nonlinearity Score (PNS)</strong>:</p>
+          <ul style="margin-left: 2rem; margin-bottom: 1rem; list-style-type: disc;">
+            <li>PNS measures how much a path decoded from Vibe Space deviates from linear interpolation in CLIP space</li>
+            <li>Specifically, we quantify <strong>excess path length</strong> and <strong>directional changes</strong></li>
+            <li>Higher PNS indicates the path traverses multiple intermediate regions of feature space</li>
+          </ul>
+          <p>
+            This PNS metric serves as a computational proxy for conceptual distance: higher PNS means greater blend difficulty.
+          </p>
+          <img src="./static/images/figures/pns_with_plot.png" alt="PNS curve" style="width: 100%; margin: 1rem 0; border-radius: 10px;">
+        </div>
+
+      </div>
+    </div>
+    <!--/ Evaluation. -->
+
+    <!-- 5. Failure Cases -->
+    <div class="columns is-centered" id="failure-cases">
+      <div class="column is-full-width">
+        <h2 class="title is-2">Failure Cases</h2>
+        
+        <div class="box" style="margin-top: 2rem; border: 1px solid #e8e8e8; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+          <div class="content has-text-justified">
+            <h3 class="title is-4">Entangled Vibes</h3>
+            <p style="margin-bottom: 1rem;">
+              Negative vibe blending fails when desired and undesired attributes are entangled in feature space. 
+              The method assumes vibes can be separated into distinct subspaces, but entangled attributes cannot be cleanly filtered.
+            </p>
+            <img src="./static/images/figures/neg_vibe_fail.png" alt="Negative vibe failure" style="width: 100%; margin: 1rem 0; border-radius: 10px;">
+            <p class="is-size-7 has-text-grey" style="margin-top: 0.5rem;">
+              Example: Positive inputs capture both style (car type) and color changes. Negative inputs target only color, 
+              but style and color are entangled, making separation difficult.
+            </p>
+          </div>
+        </div>
+
+        <div class="box" style="margin-top: 2rem; border: 1px solid #e8e8e8; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+          <div class="content has-text-justified">
+            <h3 class="title is-4">Extrapolation Uncertainty</h3>
+            <p>
+              Extrapolating beyond α > 1 does not always produce meaningful attribute exaggeration. 
+              The transformation may not continue as expected, limiting reliable extrapolation.
+            </p>
+            <img src="./static/images/figures/extrapolate_fail.png" alt="Extrapolation failure" style="width: 100%; margin: 1rem 0; border-radius: 10px;">
+          </div>
+        </div>
+
+        <div class="box" style="margin-top: 2rem; border: 1px solid #e8e8e8; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+          <div class="content has-text-justified">
+            <h3 class="title is-4">Correspondence Failure</h3>
+            <p style="margin-bottom: 1rem;">
+              Vibe Space relies on unsupervised region-level correspondence matching between DINO token clusters. 
+              This determines which semantic regions should be merged, but the matching is not always reliable.
+            </p>
+            <img src="./static/images/figures_appendix/fail_correspondence.png" alt="Correspondence failure" style="width: 100%; margin: 1rem 0; border-radius: 10px;">
+            <p>
+              <strong>Impact:</strong> When correspondence is incorrect (varies by random seeds), blends degrade significantly, 
+              producing incoherent or mismatched object-part combinations.
+            </p>
+          </div>
+        </div>
+
+        <div class="box" style="margin-top: 2rem; border: 1px solid #e8e8e8; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+          <div class="content has-text-justified">
+            <h3 class="title is-4">Reconstruction Failure</h3>
+            <p style="margin-bottom: 1rem;">
+              Our method depends on IP-Adapter (Stable Diffusion) to generate images from dense CLIP features. However, IP-Adapter reliability varies:
+            </p>
+            <ul style="margin-left: 2rem; list-style-type: disc;">
+              <li><strong>In-distribution:</strong> Consistently reconstructs (e.g., human faces) across random seeds</li>
+              <li><strong>Out-of-distribution:</strong> Produces unstable and inconsistent reconstructions</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--/ Failure Cases. -->
+
+  </div>
+</section>
+
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>todo: submit to arxiv first
+</code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <!-- <div class="content has-text-centered">
+      <a class="icon-link"
+         href="./CVPR_2026_Vibe_Space (9).pdf" target="_blank">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+    </div> -->
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is licensed under a <a rel="license"
+                                                href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+          <p>
+            This website template is based on the <a
+              href="https://github.com/nerfies/nerfies.github.io" target="_blank">Nerfies website</a>, modified by chatbot coding agents.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
+
