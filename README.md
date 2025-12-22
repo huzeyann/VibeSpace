@@ -7,7 +7,7 @@
   <a href="https://huggingface.co/spaces/huzey/VibeSpace">
     <img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Demo-blue" alt="Demo">
   </a>
-  <a href="#">
+  <a href="https://arxiv.org/abs/2512.14884">
     <img src="https://img.shields.io/badge/Paper-PDF-red" alt="Paper">
   </a>
 </p>
@@ -105,9 +105,13 @@ Vibe Space can blend multiple images simultaneously, discovering shared attribut
 ## Citation
 
 ```bibtex
-@article{yang2025vibespace,
-  title={Vibe Spaces for Creatively Connecting and Expressing Visual Concepts},
-  author={Yang, Huzheng and Xu, Katherine and Lu, Andrew and Grossberg, Michael D. and Bai, Yutong and Shi, Jianbo},
-  year={2025}
+@article{yang2025vibespacescreativelyconnecting,
+      title={Vibe Spaces for Creatively Connecting and Expressing Visual Concepts}, 
+      author={Huzheng Yang and Katherine Xu and Andrew Lu and Michael D. Grossberg and Yutong Bai and Jianbo Shi},
+      year={2025},
+      eprint={2512.14884},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2512.14884}, 
 }
 ```
