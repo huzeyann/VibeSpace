@@ -10,6 +10,9 @@
   <a href="https://arxiv.org/abs/2512.14884">
     <img src="https://img.shields.io/badge/Paper-PDF-red" alt="Paper">
   </a>
+  <a href="https://huggingface.co/datasets/huzey/vibe-blending">
+    <img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Dataset-yellow" alt="Dataset">
+  </a>
 </p>
 
 **Authors:** [Huzheng Yang](https://huzeyann.github.io)<sup>1</sup>, [Katherine Xu](https://k8xu.github.io)<sup>1</sup>, [Andrew Lu](https://scholar.google.com/citations?user=L61d7OUAAAAJ&hl=en)<sup>1</sup>, [Michael D. Grossberg](https://crest.cuny.edu/our-team/michael-grossberg)<sup>2</sup>, [Yutong Bai](https://yutongbai.com)<sup>3</sup>, [Jianbo Shi](https://www.cis.upenn.edu/~jshi)<sup>1</sup>
@@ -33,6 +36,10 @@ Consider blending a musician playing a violin with one playing a guitar. Differe
 The intuitive process of identifying and fusing meaningful attributes—the **"vibe"**—reveals creative connections between distinct concepts.
 
 > *The term "vibe," short for "vibration," originated in 1960s jazz slang to describe the mood or feeling conveyed by music, a person, or space.*
+
+## Dataset
+
+**[vibe-blending](https://huggingface.co/datasets/huzey/vibe-blending)** provides paired and images with human-labeled attribute text, scores for blend difficulty and creative potential.
 
 ## Installation
 
